@@ -1,0 +1,7 @@
+package Ywkung;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("궁영우");
+    }
+}
