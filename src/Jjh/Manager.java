@@ -9,11 +9,6 @@ public class Manager {
     Vector<Word> word = new Vector<>();
     static Scanner scanner = new Scanner(System.in);
 
-
-    void addWord(String eng, String kor){
-        this.word.add(new Word(eng, kor));
-    }
-
     void voc(String filename){
         try(Scanner file = new Scanner(new File(filename))){
 
@@ -21,7 +16,7 @@ public class Manager {
                 String str = file.nextLine();
                 String[] temp = str.split("\t");
 
-                this.addWord(temp[0].trim(), temp[1].trim());
+                word.add(new Word(temp[0].trim(), temp[1].trim()));
             }
 
             System.out.println("단어장 불러오기 완료");
@@ -30,13 +25,37 @@ public class Manager {
         }
     }
 
+    void correct(){
+        System.out.println("===== 단어 수정 =====");
+
+    }
+
+    void delete(){
+        System.out.println("===== 단어 삭제 =====");
+        System.out.print("삭제할 영단어를 입력하세요: ");
+        String eng = scanner.nextLine();
+
+        boolean found = false;
+        for(Word w : word){
+            if(w.getEng().equals(eng)){
+                word.remove(w);
+                found = true;
+                System.out.println(w.getEng() + " - " + w.getKor() + " 단어가 삭제되었습니다.");
+                return;
+            }
+        }
+        if(!found)
+            System.out.println("해당 단어는 없습니다.");
+    }
+
     void add(){
         System.out.println("===== 단어 추가 =====");
         System.out.print("추가할 영단어를 입력하세요: ");
         String term = scanner.nextLine();
         System.out.print("영단어 뜻을 입력하세요: ");
         String meaning = scanner.nextLine();
-        this.addWord(term, meaning);
+
+        word.add(new Word(term, meaning));
         System.out.println("단어를 성공적으로 등록했습니다.");
     }
 
