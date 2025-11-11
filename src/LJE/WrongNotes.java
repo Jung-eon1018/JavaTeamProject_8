@@ -1,5 +1,6 @@
 package LJE;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
@@ -15,13 +16,23 @@ public class WrongNotes {
     }
 
     public void save(String path) {
-        try(PrintWriter out = new PrintWriter(path,"UTF-8")) {
-            System.out.println("오답노트");
-            for(String w:set){
-                out.println(w);
+
+        try {
+            File file = new File(path);
+
+            File parent = file.getParentFile();
+            if (parent != null && !parent.exists()) {
+                parent.mkdirs();
+                System.out.println("폴더 자동 생성됨: " + parent.getAbsolutePath());
             }
-        }catch(IOException e){
-            System.out.println("오답 저장에 실패했습니다."+e.getMessage());
+
+            try (PrintWriter out = new PrintWriter(file, "UTF-8")) {
+                out.println("===== 오답노트 =====");
+                for (String w : set) out.println(w);
+            }
+            System.out.println("저장 완료: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            System.out.println("오답 저장 실패: " + e.getMessage());
         }
     }
 
