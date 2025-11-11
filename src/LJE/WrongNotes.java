@@ -11,14 +11,14 @@ public class WrongNotes {
     public void markWrong(String eng, String kor){
         String e = eng == null ? "" : eng.trim().toLowerCase();
         String k = kor == null ? "" : kor.trim();
-        set.add(e+"/t"+k);
+        set.add(e+"\t"+k);
     }
 
     public void save(String path) {
         try(PrintWriter out = new PrintWriter(path,"UTF-8")) {
             System.out.println("오답노트");
             for(String w:set){
-                out.print(w);
+                out.println(w);
             }
         }catch(IOException e){
             System.out.println("오답 저장에 실패했습니다."+e.getMessage());
