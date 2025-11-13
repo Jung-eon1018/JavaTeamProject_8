@@ -26,7 +26,7 @@ public class Manager2 {
         }
     }
 
-    void save(String filename) {
+    void save(String filename) { //파일 저장
         try(PrintWriter pw = new PrintWriter(filename)){
             for(String key :word.keySet()){
                 Word w = word.get(key);
@@ -38,7 +38,7 @@ public class Manager2 {
         }
     }
 
-    void correct() {
+    void correct() { //수정
         System.out.println("===== 단어 수정 =====");
         System.out.print("뜻을 수정할 영단어을 입력하세요: ");
         String eng = scanner.nextLine();
@@ -55,7 +55,7 @@ public class Manager2 {
         System.out.println("단어가 수정되었습니다.");
     }
 
-    void delete() {
+    void delete() { //삭제
         System.out.println("===== 단어 삭제 =====");
         System.out.print("삭제할 영단어를 입력하세요: ");
         String eng = scanner.nextLine();
@@ -68,7 +68,7 @@ public class Manager2 {
         System.out.println("단어가 삭제되었습니다.");
     }
 
-    void add() {
+    void add() { //추가
         System.out.println("===== 단어 추가 =====");
         System.out.print("추가할 영단어를 입력하세요: ");
         String term = scanner.nextLine();
@@ -83,7 +83,7 @@ public class Manager2 {
         System.out.println("단어를 성공적으로 등록했습니다.");
     }
 
-    void search() {
+    void search() { //검색
         System.out.println("===== 영단어 검색 =====");
         System.out.print("검색할 단어를 입력하세요(영단어): ");
         String eng = scanner.nextLine();
@@ -96,7 +96,7 @@ public class Manager2 {
         System.out.println("뜻 : " + w.getKor());
     }
 
-    void search2() {
+    void search2() { //부분 검색
         System.out.println("===== 영단어 검색 =====");
         System.out.print("검색할 부분 단어를 입력하세요(영단어): ");
         String eng = scanner.nextLine();
