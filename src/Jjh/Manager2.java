@@ -9,7 +9,7 @@ public class Manager2 {
     HashMap<String, Word> word = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
 
-    void voc(String filename) {
+    void voc(String filename) { //파일읽기
         try (Scanner file = new Scanner(new File(filename))) {
 
             while (file.hasNextLine()) {
