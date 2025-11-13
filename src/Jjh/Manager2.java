@@ -2,8 +2,8 @@ package Jjh;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class Manager2 {
     HashMap<String, Word> word = new HashMap<>();
@@ -26,8 +26,16 @@ public class Manager2 {
         }
     }
 
-    void save() {
-
+    void save(String filename) {
+        try(PrintWriter pw = new PrintWriter(filename)){
+            for(String key :word.keySet()){
+                Word w = word.get(key);
+                pw.println(w.getEng() + "\t" + w.getKor());
+            }
+            System.out.println("파일 저장 완료");
+        }catch(Exception e){
+            System.out.println("파일 저장 실패");
+        }
     }
 
     void correct() {
@@ -45,8 +53,6 @@ public class Manager2 {
         Word w = word.get(eng);
         w.setKor(kor);
         System.out.println("단어가 수정되었습니다.");
-        //단어 파일 저장
-        save();
     }
 
     void delete() {
@@ -60,7 +66,6 @@ public class Manager2 {
         }
         Word w = word.remove(eng);
         System.out.println("단어가 삭제되었습니다.");
-        save();
     }
 
     void add() {
