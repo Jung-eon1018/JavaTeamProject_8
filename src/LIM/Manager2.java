@@ -1,5 +1,7 @@
 package LIM;
 
+import LJE.WrongNotes;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -9,6 +11,7 @@ public class Manager2 {
     HashMap<String, Word> word = new HashMap<>();
     HashMap<String, Word> wrongword = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
+    WrongNotes wrongnotes = new WrongNotes();
 
     void voc(String filename) { //파일읽기
         try (Scanner file = new Scanner(new File(filename))) {
@@ -28,20 +31,8 @@ public class Manager2 {
     }
 
     void wrongvoc(String filename){
-        try (Scanner file = new Scanner(new File(filename))) {
-
-            while (file.hasNextLine()) {
-                String str = file.nextLine();
-                String[] temp = str.split("\t");
-
-                Word w = new Word(temp[0].trim(), temp[1].trim());
-                wrongword.put(temp[0].trim(), w);
-            }
-
-            System.out.println("오답 단어장 불러오기 완료");
-        } catch (FileNotFoundException e) {
-            System.out.println("오답이 존재하지 않습니다.");
-        }
+       wrongnotes.toMap();
+       wrongnotes.loadFromFile(filename);
     }
 
     void save(String filename) { //파일 저장
@@ -82,7 +73,7 @@ public class Manager2 {
             System.out.println("해당 단어가 존재하지 않습니다.");
             return;
         }
-        Word w = word.remove(eng);
+        word.remove(eng);
         System.out.println("단어가 삭제되었습니다.");
     }
 
