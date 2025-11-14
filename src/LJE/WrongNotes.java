@@ -18,8 +18,15 @@ public class WrongNotes {
     public void loadFromFile (String filename){
         try(Scanner file = new Scanner(new File(filename))){
             while(file.hasNextLine()){
-                String str = file.nextLine();
-                String[] temp = str.split("\t");
+                String str = file.nextLine().trim();
+                if (str.isEmpty()) {
+                    continue;
+                }
+                String[] temp = str.split("\\s+");
+                if (temp.length < 2) {
+                    System.out.println("파싱 실패 라인: [" + str + "], length=" + temp.length);
+                    continue;
+                }
                 set.add(new Word(temp[0].trim(),temp[1].trim()));
                 System.out.println("오답 단어장 불러오기 완료");
             }
@@ -57,6 +64,10 @@ public class WrongNotes {
         } catch (IOException e) {
             System.out.println("오답 저장 실패: " + e.getMessage());
         }
+    }
+
+    public Set<Word> getSet(){
+        return set;
     }
 
     public void printAll(){

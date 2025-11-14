@@ -24,7 +24,6 @@ public class TestMain {
 
             switch (menu) {
                 case "1":
-                    wdm.add();
                     System.out.println("단어가 추가되었습니다!");
                     break;
                 case "2":
