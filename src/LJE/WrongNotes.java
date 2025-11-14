@@ -1,10 +1,12 @@
 package LJE;
 
+import LIM.Word;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class WrongNotes {
     private final Set<String> set = new HashSet<>();
@@ -14,6 +16,33 @@ public class WrongNotes {
         String k = kor == null ? "" : kor.trim();
         set.add(e+"\t"+k);
     }
+
+    public void loadFromFile (String filename){
+        try(Scanner file = new Scanner(new File(filename))){
+            while(file.hasNextLine()){
+                String str = file.nextLine();
+                set.add(str.trim());
+                System.out.println("오답 단어장 불러오기 완료");
+            }
+        } catch (FileNotFoundException e){
+            System.out.println("오답 파일이 존재하지 않습니다");
+        }
+    }
+
+    public Map<String, Word> toMap(){
+        Map<String, Word> map = new HashMap<>();
+
+        for(String word : set){
+            String[] temp = word.split("\t");
+            if(temp.length == 2){
+                String eng = temp[0].trim();
+                String kor = temp[0].trim();
+                map.put(eng,new Word(eng,kor));
+            }
+        }
+        return map;
+    }
+
 
     public void save(String path) {
 
@@ -37,7 +66,7 @@ public class WrongNotes {
     }
 
     public void printAll(){
-        System.out.println("=====오답목록=====");
+        System.out.println("===== 오답목록 =====");
         for(String w:set){
             System.out.println(w);
         }
