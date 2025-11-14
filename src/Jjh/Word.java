@@ -16,4 +16,8 @@ public class Word {
     public String getEng() {
         return eng;
     }
+
+    public void setKor(String kor) {
+        this.kor = kor;
+    }
 }

@@ -111,6 +111,5 @@ public class Manager2 {
         if (!found)
             System.out.println("해당 영단어는 존재하지 않습니다.");
     }
-
 }
 

@@ -5,9 +5,5 @@ public class jjh {
         System.out.println("정주환");
         System.out.println("202511028");
 
-//        Manager m = new Manager();
-//        m.voc("words.txt");
-//        m.add();
-//        m.search();
     }
 }
