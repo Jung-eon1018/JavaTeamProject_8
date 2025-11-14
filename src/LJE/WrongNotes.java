@@ -9,19 +9,18 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class WrongNotes {
-    private final Set<String> set = new HashSet<>();
+    private final Set<Word> set = new HashSet<>();
 
-    public void markWrong(String eng, String kor){
-        String e = eng == null ? "" : eng.trim().toLowerCase();
-        String k = kor == null ? "" : kor.trim();
-        set.add(e+"\t"+k);
+    public void add(Word w){
+        set.add(w);
     }
 
     public void loadFromFile (String filename){
         try(Scanner file = new Scanner(new File(filename))){
             while(file.hasNextLine()){
                 String str = file.nextLine();
-                set.add(str.trim());
+                String[] temp = str.split("\t");
+                set.add(new Word(temp[0].trim(),temp[1].trim()));
                 System.out.println("오답 단어장 불러오기 완료");
             }
         } catch (FileNotFoundException e){
@@ -32,13 +31,8 @@ public class WrongNotes {
     public Map<String, Word> toMap(){
         Map<String, Word> map = new HashMap<>();
 
-        for(String word : set){
-            String[] temp = word.split("\t");
-            if(temp.length == 2){
-                String eng = temp[0].trim();
-                String kor = temp[0].trim();
-                map.put(eng,new Word(eng,kor));
-            }
+        for(Word word : set){
+            map.put(word.getEng(),word);
         }
         return map;
     }
@@ -57,7 +51,7 @@ public class WrongNotes {
 
             try (PrintWriter out = new PrintWriter(file, "UTF-8")) {
                 out.println("===== 오답노트 =====");
-                for (String w : set) out.println(w);
+                for (Word w : set) out.println(w);
             }
             System.out.println("저장 완료: " + file.getAbsolutePath());
         } catch (IOException e) {
@@ -67,7 +61,7 @@ public class WrongNotes {
 
     public void printAll(){
         System.out.println("===== 오답목록 =====");
-        for(String w:set){
+        for(Word w:set){
             System.out.println(w);
         }
     }
