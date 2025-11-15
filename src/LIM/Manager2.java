@@ -35,91 +35,6 @@ public class Manager2 {
        wrongnotes.loadFromFile(filename);
     }
 
-    void save(String filename) { //파일 저장
-        try(PrintWriter pw = new PrintWriter(filename)){
-            for(String key :word.keySet()){
-                Word w = word.get(key);
-                pw.println(w.getEng() + "\t" + w.getKor());
-            }
-            System.out.println("파일 저장 완료");
-        }catch(Exception e){
-            System.out.println("파일 저장 실패");
-        }
-    }
-
-    void correct() { //수정
-        System.out.println("===== 단어 수정 =====");
-        System.out.print("뜻을 수정할 영단어을 입력하세요: ");
-        String eng = scanner.nextLine();
-        if (!word.containsKey(eng)) {
-            System.out.println("해당 단어가 존재하지 않습니다.");
-            return;
-        }
-
-        System.out.print("뜻을 입력하세요: ");
-        String kor = scanner.nextLine();
-
-        Word w = word.get(eng);
-        w.setKor(kor);
-        System.out.println("단어가 수정되었습니다.");
-    }
-
-    void delete() { //삭제
-        System.out.println("===== 단어 삭제 =====");
-        System.out.print("삭제할 영단어를 입력하세요: ");
-        String eng = scanner.nextLine();
-
-        if (!word.containsKey(eng)) {
-            System.out.println("해당 단어가 존재하지 않습니다.");
-            return;
-        }
-        word.remove(eng);
-        System.out.println("단어가 삭제되었습니다.");
-    }
-
-    void add() { //추가
-        System.out.println("===== 단어 추가 =====");
-        System.out.print("추가할 영단어를 입력하세요: ");
-        String term = scanner.nextLine();
-        if(word.containsKey(term)) {
-            System.out.println("이미 존재하는 영단어입니다.");
-            return;
-        }
-        System.out.print("영단어 뜻을 입력하세요: ");
-        String meaning = scanner.nextLine();
-
-        word.put(term, new Word(term, meaning));
-        System.out.println("단어를 성공적으로 등록했습니다.");
-    }
-
-    void search() { //검색
-        System.out.println("===== 영단어 검색 =====");
-        System.out.print("검색할 단어를 입력하세요(영단어): ");
-        String eng = scanner.nextLine();
-
-        if (!word.containsKey(eng)) {
-            System.out.println("해당 단어가 존재하지 않습니다.");
-            return;
-        }
-        Word w = word.get(eng);
-        System.out.println("뜻 : " + w.getKor());
-    }
-
-    void search2() { //부분 검색
-        System.out.println("===== 영단어 검색 =====");
-        System.out.print("검색할 부분 단어를 입력하세요(영단어): ");
-        String eng = scanner.nextLine();
-
-        boolean found = false;
-        for (Word w : word.values()) {
-            if (w.getEng().startsWith(eng)) {
-                System.out.println(w.getEng() + " = " + w.getKor());
-                found = true;
-            }
-        }
-        if (!found)
-            System.out.println("해당 영단어는 존재하지 않습니다.");
-    }
     void wordgame1_1(HashMap<String, Word> wordmap){
 
 
@@ -240,16 +155,12 @@ public class Manager2 {
         }
 
         for(Word w : wronglist){
-            int wordcount = 0;
-            for(int i = 0; i < wrongword.size(); i++){
-                if(w.equals(wronglist.get(i))){
-                    wordcount++;
-                }
-            }
-            if(wordcount == 0){
-                wrongword.put(w.getEng(), w);
+            if (w != null) {
+                wrongnotes.add(w);
             }
         }
+
+        wrongword.putAll(wrongnotes.toMap());
 
     }
 
@@ -375,16 +286,12 @@ public class Manager2 {
         }
 
         for(Word w : wronglist){
-            int wordcount = 0;
-            for(int i = 0; i < wrongword.size(); i++){
-                if(w.equals(wronglist.get(i))){
-                    wordcount++;
-                }
-            }
-            if(wordcount == 0){
-                wrongword.put(w.getEng(), w);
+            if (w != null) {
+                wrongnotes.add(w);
             }
         }
+
+        wrongword.putAll(wrongnotes.toMap());
 
     }
 
@@ -463,16 +370,13 @@ public class Manager2 {
 
 
         for(Word w : wronglist){
-            int wordcount = 0;
-            for(int i = 0; i < wrongword.size(); i++){
-                if(w.equals(wronglist.get(i))){
-                    wordcount++;
-                }
-            }
-            if(wordcount == 0){
-                wrongword.put(w.getEng(), w);
+            if (w != null) {
+                wrongnotes.add(w);
             }
         }
+
+        wrongword.putAll(wrongnotes.toMap());
+
     }
 
     void wordgame2_2(HashMap<String, Word> wordmap){
@@ -532,16 +436,13 @@ public class Manager2 {
 
 
         for(Word w : wronglist){
-            int wordcount = 0;
-            for(int i = 0; i < wrongword.size(); i++){
-                if(w.equals(wronglist.get(i))){
-                    wordcount++;
-                }
-            }
-            if(wordcount == 0){
-                wrongword.put(w.getEng(), w);
+            if (w != null) {
+                wrongnotes.add(w);
             }
         }
+
+        wrongword.putAll(wrongnotes.toMap());
+
     }
 
     public void showWrongWords() {
