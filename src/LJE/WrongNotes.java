@@ -3,8 +3,6 @@ package LJE;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
 
 public class WrongNotes {
     private final Set<String> set = new HashSet<>();
