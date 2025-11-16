@@ -1,5 +1,6 @@
 package Jjh;
 
+import LIM.Word;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -7,6 +8,7 @@ import java.util.*;
 
 public class Manager2 {
     HashMap<String, Word> word = new HashMap<>();
+    CommonWordsNotes commonnotes = new CommonWordsNotes();
     static Scanner scanner = new Scanner(System.in);
 
     void voc(String filename) { //파일읽기
@@ -38,6 +40,10 @@ public class Manager2 {
         }
     }
 
+    void savecommon(String filename){
+        commonnotes.save(filename);
+    }
+
     void correct() { //수정
         System.out.println("===== 단어 수정 =====");
         System.out.print("뜻을 수정할 영단어을 입력하세요: ");
@@ -66,7 +72,10 @@ public class Manager2 {
         }
         Word w = word.remove(eng);
         System.out.println("단어가 삭제되었습니다.");
+
     }
+
+
 
     void add() { //추가
         System.out.println("===== 단어 추가 =====");
@@ -94,6 +103,14 @@ public class Manager2 {
         }
         Word w = word.get(eng);
         System.out.println("뜻 : " + w.getKor());
+        //빈출 단어장 추가 여부
+        System.out.print("이 단어를 빈출 단어장에 추가하시겠습니까? (Y/N): ");
+        String k = scanner.nextLine();
+        if(k.equals("Y")){
+            commonnotes.add(w);
+            System.out.println("빈출 단어장에 추가되었습니다.");
+        }else
+            System.out.println("빈출 단어장에 추가하지 않았습니다.");
     }
 
     void search2() { //부분 검색
@@ -106,10 +123,19 @@ public class Manager2 {
             if (w.getEng().startsWith(eng)) {
                 System.out.println(w.getEng() + " = " + w.getKor());
                 found = true;
+                //빈출 단어장 추가 여부
+                System.out.print("이 단어를 빈출 단어장에 추가하시겠습니까? (Y/N): ");
+                String k = scanner.nextLine();
+                if(k.equals("Y")){
+                    commonnotes.add(w);
+                    System.out.println("빈출 단어장에 추가되었습니다.");
+                }else
+                    System.out.println("빈출 단어장에 추가하지 않았습니다.");
             }
         }
         if (!found)
             System.out.println("해당 영단어는 존재하지 않습니다.");
+
     }
 }
 
