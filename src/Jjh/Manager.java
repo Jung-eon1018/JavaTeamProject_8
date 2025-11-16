@@ -25,9 +25,25 @@ public class Manager {
         }
     }
 
+//    void showAll(){
+//        for(Word w : word){
+//            System.out.println(w.getEng() + " - " + w.getKor());
+//        }
+//    }
     void correct(){
         System.out.println("===== 단어 수정 =====");
-
+        System.out.print("뜻을 수정할 영단어을 입력하세요: ");
+        String eng = scanner.nextLine();
+        System.out.print("뜻을 입력하세요: ");
+        String kor = scanner.nextLine();
+        for(Word w : word){
+            if(w.getEng().equals(eng)){
+                w.setKor(kor);
+                System.out.println("단어가 수정되었습니다.");
+                return;
+            }
+        }
+        //단어 파일 저장
     }
 
     void delete(){
