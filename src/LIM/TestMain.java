@@ -1,14 +1,20 @@
 package LIM;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class TestMain {
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Manager2 wdm = new Manager2();
         wdm.voc("src/LIM/res/word.txt");
         wdm.wrongvoc("src/LIM/res/wrong.txt");
+
+
 
         while (true) {
             System.out.println("\n=== 나만의 영어 단어장 ===");
@@ -38,7 +44,7 @@ public class TestMain {
                     }
                     quizprint(wdm, wdm.wrongword);
                 }
-                    break;
+                break;
                 case "5":
                     wdm.showWrongWords();
                     break;
@@ -46,12 +52,31 @@ public class TestMain {
                     wdm.deleteWrongwords();
                     break;
                 case "7":
-                    System.out.println("프로그램을 종료합니다...");
-                    break;
-
+                    System.out.println("저장 후 종료합니다...");
+                    saveFiles("src/LIM/res/word.txt", "src/LIM/res/wrong.txt");
+                    return;
                 default:
                     System.out.println("잘못된 입력입니다.");
             }
+        }
+    }
+
+    public static void saveFiles(String wordPath, String wrongPath) {
+        HashMap<String, Word> word = null;
+        saveMapToFile(wordPath, word);
+        HashMap<String, Word> wrongword = null;
+        //틀린 답 저장하기
+        saveMapToFile(wrongPath, wrongword);
+        System.out.println("모든 단어가 파일에 저장되었습니다.");
+    }
+
+    private static void saveMapToFile(String filename, HashMap<String, Word> map) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(filename))) {
+            for (Word w : map.values()) {
+                pw.println(w.getEng() + "," + w.getKor());
+            }
+        } catch (IOException e) {
+            System.out.println("저장 중 오류 발생 (" + filename + "): " + e.getMessage());
         }
     }
 
