@@ -28,6 +28,17 @@ public class FinalTestMain {
             System.out.println("파일 생성 중 오류 발생: " + e.getMessage());
         }
 
+        try {
+            if (!wrongfile.exists()) {
+
+                wrongfile.getParentFile().mkdirs(); // data 폴더가 없으면 생성
+                wrongfile.createNewFile();
+                System.out.println("단어 파일이 존재하지 않아 새로 생성합니다.");
+            }
+        } catch (IOException e) {
+            System.out.println("파일 생성 중 오류 발생: " + e.getMessage());
+        }
+
         manager.voc(file);
         game.wrongvoc(wrongfile);
 
