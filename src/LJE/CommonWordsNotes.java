@@ -53,6 +53,4 @@ public class CommonWordsNotes {
             System.out.println(w.getEng()+"\t"+w.getKor());
         }
     }
-
-
 }

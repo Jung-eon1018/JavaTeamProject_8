@@ -578,9 +578,6 @@ public class Manager2 {
             System.out.println(w);
         }
 
-
-
-
     }
 }
 

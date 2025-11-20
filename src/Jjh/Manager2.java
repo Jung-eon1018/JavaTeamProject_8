@@ -44,6 +44,11 @@ public class Manager2 {
         commonnotes.save(filename);
     }
 
+    void printcommon(){
+        System.out.println("===== 빈출 단어장 =====");
+        commonnotes.printAll();
+    }
+
     void correct() { //수정
         System.out.println("===== 단어 수정 =====");
         System.out.print("뜻을 수정할 영단어을 입력하세요: ");
