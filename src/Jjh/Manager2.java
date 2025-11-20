@@ -48,6 +48,7 @@ public class Manager2 {
     }
 
     public void showcommonwrong(){
+        System.out.println("==== 빈출 오답 단어장 ====");
         commonnotes.retainWords();
         commonnotes.printRetainWords();
     }
