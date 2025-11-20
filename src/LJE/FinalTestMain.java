@@ -15,7 +15,7 @@ public class FinalTestMain {
         Manager2_game game = new Manager2_game();
 
         File file = new File("data/word.txt");
-        File wrongfile = new File("data/word.txt");
+        File wrongfile = new File("data/wrong.txt");
 
         try {
             if (!file.exists()) {
