@@ -7,12 +7,13 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Manager2 {
+
     HashMap<String, Word> word = new HashMap<>();
     CommonWordsNotes commonnotes = new CommonWordsNotes();
     static Scanner scanner = new Scanner(System.in);
 
-    void voc(String filename) { //파일읽기
-        try (Scanner file = new Scanner(new File(filename))) {
+    public void voc(File filename) { //파일읽기
+        try (Scanner file = new Scanner(new File(filename.getPath()))) {
 
             while (file.hasNextLine()) {
                 String str = file.nextLine();
@@ -28,7 +29,7 @@ public class Manager2 {
         }
     }
 
-    void save(String filename) { //파일 저장
+    public void save(File filename) { //파일 저장
         try(PrintWriter pw = new PrintWriter(filename)){
             for(String key :word.keySet()){
                 Word w = word.get(key);
@@ -40,11 +41,16 @@ public class Manager2 {
         }
     }
 
-    void savecommon(String filename){
-        commonnotes.save(filename);
+    void list() {
+
     }
 
-    void correct() { //수정
+    void savecommon() {
+        File commonFile = new File("data/common.txt"); // 빈출 단어장 파일
+        commonnotes.save(commonFile.getPath());
+    }
+
+    public void correct() { //수정
         System.out.println("===== 단어 수정 =====");
         System.out.print("뜻을 수정할 영단어을 입력하세요: ");
         String eng = scanner.nextLine();
@@ -61,7 +67,7 @@ public class Manager2 {
         System.out.println("단어가 수정되었습니다.");
     }
 
-    void delete() { //삭제
+    public void delete() { //삭제
         System.out.println("===== 단어 삭제 =====");
         System.out.print("삭제할 영단어를 입력하세요: ");
         String eng = scanner.nextLine();
@@ -77,7 +83,7 @@ public class Manager2 {
 
 
 
-    void add() { //추가
+    public void add() { //추가
         System.out.println("===== 단어 추가 =====");
         System.out.print("추가할 영단어를 입력하세요: ");
         String term = scanner.nextLine();
@@ -92,7 +98,7 @@ public class Manager2 {
         System.out.println("단어를 성공적으로 등록했습니다.");
     }
 
-    void search() { //검색
+    public void search() { //검색
         System.out.println("===== 영단어 검색 =====");
         System.out.print("검색할 단어를 입력하세요(영단어): ");
         String eng = scanner.nextLine();
@@ -108,12 +114,13 @@ public class Manager2 {
         String k = scanner.nextLine();
         if(k.equals("Y")){
             commonnotes.add(w);
+            savecommon();
             System.out.println("빈출 단어장에 추가되었습니다.");
         }else
             System.out.println("빈출 단어장에 추가하지 않았습니다.");
     }
 
-    void search2() { //부분 검색
+    public void search2() { //부분 검색
         System.out.println("===== 영단어 검색 =====");
         System.out.print("검색할 부분 단어를 입력하세요(영단어): ");
         String eng = scanner.nextLine();
@@ -128,6 +135,7 @@ public class Manager2 {
                 String k = scanner.nextLine();
                 if(k.equals("Y")){
                     commonnotes.add(w);
+                    savecommon();
                     System.out.println("빈출 단어장에 추가되었습니다.");
                 }else
                     System.out.println("빈출 단어장에 추가하지 않았습니다.");
@@ -137,5 +145,7 @@ public class Manager2 {
             System.out.println("해당 영단어는 존재하지 않습니다.");
 
     }
+
+
 }
 
