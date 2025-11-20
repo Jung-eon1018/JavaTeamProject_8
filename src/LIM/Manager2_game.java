@@ -1,14 +1,81 @@
 package LIM;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
-public class Manager2 {
-    HashMap<String, Word> word = new HashMap<>();
-    HashMap<String, Word> wrongword = new HashMap<>();
+public class Manager2_game {
+    HashMap<String, Word> commonword = new HashMap<>();
+    WrongNotes wns = new WrongNotes();
     static Scanner scanner = new Scanner(System.in);
+
+    private HashMap<String, Word> word = new HashMap<>();
+    private HashMap<String, Word> wrongword = new HashMap<>();
+    WrongNotes wrongnotes = new WrongNotes();
+
+    public HashMap<String, Word> getWordMap() {
+        return word;
+    }
+
+    public HashMap<String, Word> getWrongWordMap() {
+        return wrongword;
+    }
+
+    public void voc(File filename) { //파일읽기
+        try (Scanner file = new Scanner(new File(filename.getPath()))) {
+
+            while (file.hasNextLine()) {
+                String str = file.nextLine();
+                String[] temp = str.split("\t");
+
+                Word w = new Word(temp[0].trim(), temp[1].trim());
+                word.put(temp[0].trim(), w);
+            }
+
+            System.out.println("단어장 불러오기 완료");
+        } catch (FileNotFoundException e) {
+            System.out.println("파일을 찾을 수 없습니다.");
+        }
+    }
+
+    public void wrongvoc(File filename){
+        wrongnotes.loadFromFile(filename.getPath());
+        wrongword = (HashMap<String, Word>) wrongnotes.toMap();
+    }
+
+
+    public static void quizprint(Manager2_game wdm, HashMap<String, Word> quizlist){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("실행하실 퀴즈 모드를 선택해주세요");
+        System.out.println("1) 객관식");
+        System.out.println("2) 주관식");
+        int ans = sc.nextInt();
+        sc.nextLine();
+        switch (ans){
+            case 1 -> {
+                System.out.println("실행하실 퀴즈 설정을 선택해주세요");
+                System.out.println("1) 영어 단어(정답 : 한글 뜻)");
+                System.out.println("2) 한글 뜻(정답 : 영어 단어)");
+                int ans2 = sc.nextInt();
+                sc.nextLine();
+                switch (ans2) {
+                    case 1 -> wdm.wordgame1_1(quizlist);
+                    case 2 -> wdm.wordgame1_2(quizlist);
+                }
+            }
+            case 2 -> {
+                System.out.println("실행하실 퀴즈 설정을 선택해주세요");
+                System.out.println("1) 영어 단어(정답 : 한글 뜻)");
+                System.out.println("2) 한글 뜻(정답 : 영어 단어)");
+                int ans2 = sc.nextInt();
+                sc.nextLine();
+                switch (ans2) {
+                    case 1 -> wdm.wordgame2_1(quizlist);
+                    case 2 -> wdm.wordgame2_2(quizlist);
+                }
+            }
+        }
+    }
+
 
     void voc(String filename) { //파일읽기
         try (Scanner file = new Scanner(new File(filename))) {
@@ -44,91 +111,7 @@ public class Manager2 {
         }
     }
 
-    void save(String filename) { //파일 저장
-        try(PrintWriter pw = new PrintWriter(filename)){
-            for(String key :word.keySet()){
-                Word w = word.get(key);
-                pw.println(w.getEng() + "\t" + w.getKor());
-            }
-            System.out.println("파일 저장 완료");
-        }catch(Exception e){
-            System.out.println("파일 저장 실패");
-        }
-    }
 
-    void correct() { //수정
-        System.out.println("===== 단어 수정 =====");
-        System.out.print("뜻을 수정할 영단어을 입력하세요: ");
-        String eng = scanner.nextLine();
-        if (!word.containsKey(eng)) {
-            System.out.println("해당 단어가 존재하지 않습니다.");
-            return;
-        }
-
-        System.out.print("뜻을 입력하세요: ");
-        String kor = scanner.nextLine();
-
-        Word w = word.get(eng);
-        w.setKor(kor);
-        System.out.println("단어가 수정되었습니다.");
-    }
-
-    void delete() { //삭제
-        System.out.println("===== 단어 삭제 =====");
-        System.out.print("삭제할 영단어를 입력하세요: ");
-        String eng = scanner.nextLine();
-
-        if (!word.containsKey(eng)) {
-            System.out.println("해당 단어가 존재하지 않습니다.");
-            return;
-        }
-        Word w = word.remove(eng);
-        System.out.println("단어가 삭제되었습니다.");
-    }
-
-    void add() { //추가
-        System.out.println("===== 단어 추가 =====");
-        System.out.print("추가할 영단어를 입력하세요: ");
-        String term = scanner.nextLine();
-        if(word.containsKey(term)) {
-            System.out.println("이미 존재하는 영단어입니다.");
-            return;
-        }
-        System.out.print("영단어 뜻을 입력하세요: ");
-        String meaning = scanner.nextLine();
-
-        word.put(term, new Word(term, meaning));
-        System.out.println("단어를 성공적으로 등록했습니다.");
-    }
-
-    void search() { //검색
-        System.out.println("===== 영단어 검색 =====");
-        System.out.print("검색할 단어를 입력하세요(영단어): ");
-        String eng = scanner.nextLine();
-
-        if (!word.containsKey(eng)) {
-            System.out.println("해당 단어가 존재하지 않습니다.");
-            return;
-        }
-        Word w = word.get(eng);
-        System.out.println("뜻 : " + w.getKor());
-    }
-
-    void search2() { //부분 검색
-        System.out.println("===== 영단어 검색 =====");
-        System.out.print("검색할 부분 단어를 입력하세요(영단어): ");
-        String eng = scanner.nextLine();
-
-        boolean found = false;
-        for (Word w : word.values()) {
-            if (w.getEng().startsWith(eng)) {
-                System.out.println(w.getEng() + " = " + w.getKor());
-                found = true;
-            }
-        }
-        if (!found)
-            System.out.println("해당 영단어는 존재하지 않습니다.");
-    }
     void wordgame1_1(HashMap<String, Word> wordmap){
 
 
@@ -222,7 +205,7 @@ public class Manager2 {
 
             }
             System.out.println(); // 줄바꿈용
-            System.out.println("정답 : ");
+            System.out.print("정답 : ");
             int uans = scanner.nextInt();
             scanner.nextLine(); // \n 버퍼에서 삭제
 
@@ -245,6 +228,7 @@ public class Manager2 {
                 System.out.println("====================================================");
                 System.out.println("단어 : " + wronglist.get(i).getEng());
                 System.out.println("뜻 : " + wronglist.get(i).getKor());
+
             }
         }
 
@@ -357,7 +341,7 @@ public class Manager2 {
 
             }
             System.out.println(); // 줄바꿈용
-            System.out.println("정답 : ");
+            System.out.print("정답 : ");
             int uans = scanner.nextInt();
             scanner.nextLine(); // \n 버퍼에서 삭제
 
@@ -434,8 +418,8 @@ public class Manager2 {
                 ansKorSet[j] = ansKorSet[j].trim();
             } // 한글 뜻을 / 로 분리 & 그 좌우에 있을 수 있는 ' ' 제거
             System.out.println("=================단어퀴즈("+(i+1)+"/10)=================");
-            System.out.println("한글 뜻 : \t\t\t"+ ans.getEng()+"\t\t\t");
-            System.out.println("정답(영어 단어) : ");
+            System.out.println("영어 단어 : \t\t\t"+ ans.getEng()+"\t\t\t");
+            System.out.print("정답(한글 뜻) : ");
             String[] uans = scanner.nextLine().split("/");
             for(int j = 0; j < uans.length; j++){
                 uans[j] = uans[j].trim();
@@ -517,7 +501,7 @@ public class Manager2 {
             donelist.add(ans);
             System.out.println("=================단어퀴즈("+(i+1)+"/10)=================");
             System.out.println("한글 뜻 : \t\t\t"+ ans.getKor()+"\t\t\t");
-            System.out.println("정답(영어 단어) : ");
+            System.out.print("정답(영어 단어) : ");
             String uans = scanner.nextLine().trim();
             if(uans.equals(ans.getEng())){
                 System.out.println("정답입니다!");
@@ -608,8 +592,8 @@ public class Manager2 {
                 ansKorSet[j] = ansKorSet[j].trim();
             } // 한글 뜻을 / 로 분리 & 그 좌우에 있을 수 있는 ' ' 제거
             System.out.println("=================오답퀴즈1("+(i+1)+"/"+list.size()+")=================");
-            System.out.println("한글 뜻 : \t\t\t"+ ans.getEng()+"\t\t\t");
-            System.out.println("정답(영어 단어) : ");
+            System.out.println("영어 단어 : \t\t\t"+ ans.getEng()+"\t\t\t");
+            System.out.print("정답(한글 뜻) : ");
             String[] uans = scanner.nextLine().split("/");
             for(int j = 0; j < uans.length; j++){
                 uans[j] = uans[j].trim();
@@ -655,7 +639,7 @@ public class Manager2 {
             donelist2.add(ans);
             System.out.println("=================오답퀴즈2("+(i+1)+"/"+list.size()+")=================");
             System.out.println("한글 뜻 : \t\t\t"+ ans.getKor()+"\t\t\t");
-            System.out.println("정답(영어 단어) : ");
+            System.out.print("정답(영어 단어) : ");
             String uans = scanner.nextLine().trim();
             if(uans.equals(ans.getEng())){
                 System.out.println("정답입니다!");
@@ -690,5 +674,121 @@ public class Manager2 {
 
 
     }
+
+    public void saveFiles(File wordfile, File wrongfile) {
+        saveMapToFile(wordfile, this.word);
+        saveMapToFile(wrongfile, this.wrongword);
+
+        System.out.println("모든 단어가 파일에 저장되었습니다.");
+    }
+
+    private static void saveMapToFile(File filename, HashMap<String, Word> map) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(filename.getPath()))) {
+            for (Word w : map.values()) {
+                pw.println(w.getEng() + "," + w.getKor());
+            }
+        } catch (IOException e) {
+            System.out.println("저장 중 오류 발생 (" + filename + "): " + e.getMessage());
+        }
+    }
+
+    public void hintgame(HashMap<String, Word> wordmap){
+
+        int howlong = 10;
+        int wrongnum = 0;
+
+        List<Word> wronglist = new ArrayList<>();
+        List<Word> list = new ArrayList<>(wordmap.values()); // 랜덤 숫자로 뽑기 위해 list 형태로 변환
+        Random rand = new Random();
+        List<Word> donelist = new ArrayList<>(); // 이미 쓴 단어는 넣지 않기 위함
+
+        if(list.size() < howlong){
+            howlong = list.size();
+        }
+        for(int i = 0; i < howlong; i++){
+
+            Word ans;
+            while(true){
+                int donecount = 0;
+
+                ans = list.get(rand.nextInt(list.size()));
+                for(int j = 0; j < donelist.size(); j++){
+                    if(ans.equals(donelist.get(j))){
+                        donecount++;
+                    }
+                }
+                if(donecount == 0){
+                    break;
+                }
+            }
+            int hintspellnum = (ans.eng.length() * 2) / 5; // 정답 글자 수의 40%을 힌트로 줄 예정
+            List<Integer> numlist = new ArrayList<>();
+            List<Character> hint = new ArrayList<>();
+            for(int j = 0; j < ans.eng.length(); j++){
+                numlist.add(j);
+                hint.add('_');
+            }
+            Collections.shuffle(numlist);
+            for(int j = 0; j < hintspellnum; j++){
+                hint.set(numlist.get(j), ans.eng.charAt(numlist.get(j)));
+            }
+
+
+            donelist.add(ans);
+
+
+            int wrongnow = 0;
+            for(int j = 0; j < 2; j++){
+                System.out.println("=================단어퀴즈("+(i+1)+"/10)=================");
+                System.out.println("한글 뜻 : \t\t\t"+ ans.getKor()+"\t\t\t");
+                if(wrongnow != 0) {
+                    System.out.print("힌트 : " );
+                    for(Character hintc : hint){
+                        System.out.print(hintc + " ");
+                    }
+                    System.out.println();
+                }
+                System.out.print("정답(영어 단어) : ");
+                String uans = scanner.nextLine().trim();
+                if(uans.equals(ans.getEng())){
+                    System.out.println("정답입니다!");
+                    break;
+                } else if(wrongnow == 0){
+                    System.out.println("오답입니다 (기회 1/2)");
+                    wrongnow++;
+                } else{
+                    System.out.println("오답입니다 (기회 2/2)");
+                    wronglist.add(ans);
+                    wrongnum++;
+                }
+            }
+
+        }
+
+        System.out.println("==================게임이 끝났습니다==================");
+        System.out.println("틀린 횟수 : "+wrongnum);
+        System.out.println("틀린 단어들 V");
+        for(int i = 0; i < wronglist.size(); i++){
+            if(wronglist.get(i) != null) {
+                System.out.println("====================================================");
+                System.out.println("단어 : " + wronglist.get(i).getEng());
+                System.out.println("뜻 : " + wronglist.get(i).getKor());
+            }
+        }
+
+
+        for(Word w : wronglist){
+            int wordcount = 0;
+            for(int i = 0; i < wrongword.size(); i++){
+                if(w.equals(wronglist.get(i))){
+                    wordcount++;
+                }
+            }
+            if(wordcount == 0){
+                wrongword.put(w.getEng(), w);
+            }
+        }
+    }
 }
+
 

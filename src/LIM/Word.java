@@ -19,6 +19,8 @@ public class Word {
         return eng;
     }
 
+
+
     public void setKor(String kor) {
         this.kor = kor;
     }
