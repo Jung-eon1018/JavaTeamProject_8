@@ -1,6 +1,8 @@
 package Jjh;
 
 import LIM.Word;
+import LJE.CommonWordsNotes;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

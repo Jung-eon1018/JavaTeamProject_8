@@ -1,9 +1,11 @@
 package LJE;
 
 import LIM.Word;
+import LIM.WrongNotes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -24,7 +26,7 @@ public class CommonWordsNotes {
                 if (str.isEmpty()) {
                     continue;
                 }
-                String[] temp = str.split("\\s+");
+                String[] temp = str.split("\\s{2,}");
                 if (temp.length < 2) {
                     System.out.println("파싱 실패 라인: [" + str + "], length=" + temp.length);
                     continue;
@@ -51,6 +53,20 @@ public class CommonWordsNotes {
         System.out.println("빈출 오답 단어");
         for(Word w : commonset){
             System.out.println(w.getEng()+"\t"+w.getKor());
+        }
+    }
+
+    public void save(String filename) {
+        try {
+            File file = new File(filename);
+            try (PrintWriter pw = new PrintWriter(file)) {
+                for (Word w : commonset) {
+                    pw.println(w.getEng() + "\t" + w.getKor());
+                }
+            }
+            System.out.println("빈출 단어장 파일 저장 완료");
+        } catch (Exception e) {
+            System.out.println("빈출 단어장 파일 저장 실패");
         }
     }
 

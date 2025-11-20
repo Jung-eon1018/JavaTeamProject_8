@@ -1,6 +1,4 @@
-package LJE;
-
-import LIM.Word;
+package LIM;
 
 import java.io.File;
 import java.io.FileNotFoundException;
