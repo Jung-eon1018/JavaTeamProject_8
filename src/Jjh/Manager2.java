@@ -47,6 +47,11 @@ public class Manager2 {
 
     }
 
+    public void showcommonwrong(){
+        commonnotes.retainWords();
+        commonnotes.printRetainWords();
+    }
+
     void savecommon() {
         File commonFile = new File("data/common.txt"); // 빈출 단어장 파일
         commonnotes.save(commonFile.getPath());
