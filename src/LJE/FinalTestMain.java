@@ -73,6 +73,7 @@ public class FinalTestMain {
         System.out.println("4.단어 삭제");
         System.out.println("5.단어 검색");
         System.out.println("6.부분 단어 검색");
+        System.out.println("7.빈출 오답 단어 확인");
         String manager_menu = sc.nextLine();
 
         switch (manager_menu){
@@ -94,6 +95,9 @@ public class FinalTestMain {
             case "6" ->{
                 manager.search2();
             }
+            case "7" ->{
+                manager.showcommonwrong();
+            }
         }
 
     }
@@ -113,21 +117,26 @@ public class FinalTestMain {
         switch (game_menu){
             case "1" -> {
                 game.quizprint(game,game.getWordMap());
+                game.saveFiles(file,wrongfile);
             }
             case "2" -> {
                 game.hintgame(game.getWordMap());
+                game.saveFiles(file,wrongfile);
             }
             case "3" -> {
                 if(game.getWordMap().size()==0){
                     System.out.println("현재 오답이 없습니다.");
                 }
                 game.quizprint(game,game.getWrongWordMap());
+                game.saveFiles(file,wrongfile);
             }
             case "4"->{
                 game.showWrongWords();
+                game.saveFiles(file,wrongfile);
             }
             case "5"->{
                 game.deleteWrongwords();
+                game.saveFiles(file,wrongfile);
             }
             case "6"->{
                 game.saveFiles(file,wrongfile);
