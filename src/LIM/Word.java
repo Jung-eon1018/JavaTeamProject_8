@@ -31,6 +31,10 @@ public class Word {
         return Objects.equals(this.getKor(), word.getKor()) && Objects.equals(this.getEng(), word.getEng());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(eng, kor);
+    }
 
     @Override
     public String toString() {
@@ -39,4 +43,6 @@ public class Word {
         str += "뜻 : " + kor + "\n";
         return str;
     }
+
+
 }
