@@ -22,7 +22,7 @@ public class WrongNotes {
                 if (str.isEmpty()) {
                     continue;
                 }
-                String[] temp = str.split("\\s+");
+                String[] temp = str.split("\\s{2,}");
                 if (temp.length < 2) {
                     System.out.println("파싱 실패 라인: [" + str + "], length=" + temp.length);
                     continue;

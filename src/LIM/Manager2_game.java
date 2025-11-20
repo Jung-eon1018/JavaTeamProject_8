@@ -19,7 +19,7 @@ public class Manager2_game {
         return wrongword;
     }
 
-    void voc(File filename) { //파일읽기
+    public void voc(File filename) { //파일읽기
         try (Scanner file = new Scanner(new File(filename.getPath()))) {
 
             while (file.hasNextLine()) {

@@ -40,6 +40,7 @@ public class FinalTestMain {
         }
 
         manager.voc(file);
+        game.voc(file);
         game.wrongvoc(wrongfile);
 
         while(true){
