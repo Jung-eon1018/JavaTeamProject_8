@@ -40,6 +40,7 @@ public class FinalTestMain {
         }
 
         manager.voc(file);
+        game.voc(file);
         game.wrongvoc(wrongfile);
 
         while(true){
@@ -101,29 +102,34 @@ public class FinalTestMain {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n단어 게임을 실행합니다.");
         System.out.println("1.모든단어 게임");
-        System.out.println("2.오답단어 게임");
-        System.out.println("3.오답단어 보기");
-        System.out.println("4.오답단어 제거하기 게임");
-        System.out.println("5.게임 종료");
+        System.out.println("2.힌트 게임");
+        System.out.println("3.오답단어 게임");
+        System.out.println("4.오답단어 보기");
+        System.out.println("5.오답단어 제거하기 게임");
+        System.out.println("6.게임 종료");
         String game_menu = sc.nextLine();
+
 
         switch (game_menu){
             case "1" -> {
                 game.quizprint(game,game.getWordMap());
             }
             case "2" -> {
+                game.hintgame(game.getWordMap());
+            }
+            case "3" -> {
                 if(game.getWordMap().size()==0){
                     System.out.println("현재 오답이 없습니다.");
                 }
                 game.quizprint(game,game.getWrongWordMap());
             }
-            case "3"->{
+            case "4"->{
                 game.showWrongWords();
             }
-            case "4"->{
+            case "5"->{
                 game.deleteWrongwords();
             }
-            case "5"->{
+            case "6"->{
                 game.saveFiles(file,wrongfile);
             }
         }

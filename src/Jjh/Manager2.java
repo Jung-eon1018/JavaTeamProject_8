@@ -7,12 +7,13 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public class Manager2 {
+
     HashMap<String, Word> word = new HashMap<>();
     CommonWordsNotes commonnotes = new CommonWordsNotes();
     static Scanner scanner = new Scanner(System.in);
 
     public void voc(File filename) { //파일읽기
-        try (Scanner file = new Scanner(filename)) {
+        try (Scanner file = new Scanner(new File(filename.getPath()))) {
 
             while (file.hasNextLine()) {
                 String str = file.nextLine();
@@ -40,21 +41,13 @@ public class Manager2 {
         }
     }
 
+    void list() {
 
-
-    public void savecommon(String filename){
-        commonnotes.save(filename);
     }
 
-    public void showcommonwrong(){
-        System.out.println("==== 빈출 오답 단어장 ====");
-        commonnotes.retainWords();
-        commonnotes.printRetainWords();
-    }
-
-    public void printcommon(){
-        System.out.println("===== 빈출 단어장 =====");
-        commonnotes.printAll();
+    void savecommon() {
+        File commonFile = new File("data/common.txt"); // 빈출 단어장 파일
+        commonnotes.save(commonFile.getPath());
     }
 
     public void correct() { //수정
@@ -121,6 +114,7 @@ public class Manager2 {
         String k = scanner.nextLine();
         if(k.equals("Y")){
             commonnotes.add(w);
+            savecommon();
             System.out.println("빈출 단어장에 추가되었습니다.");
         }else
             System.out.println("빈출 단어장에 추가하지 않았습니다.");
@@ -141,6 +135,7 @@ public class Manager2 {
                 String k = scanner.nextLine();
                 if(k.equals("Y")){
                     commonnotes.add(w);
+                    savecommon();
                     System.out.println("빈출 단어장에 추가되었습니다.");
                 }else
                     System.out.println("빈출 단어장에 추가하지 않았습니다.");
@@ -150,5 +145,7 @@ public class Manager2 {
             System.out.println("해당 영단어는 존재하지 않습니다.");
 
     }
+
+
 }
 
