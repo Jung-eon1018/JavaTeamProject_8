@@ -3,8 +3,7 @@ package Final;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Manager {
     HashMap<String, Word> word = new HashMap<>();
@@ -28,6 +27,9 @@ public class Manager {
         }
     }
 
+    public Collection <Word> getWords(){
+        return word.values();
+    }
     public void save(File filename) { //파일 저장
         try(PrintWriter pw = new PrintWriter(filename)){
             for(String key :word.keySet()){
@@ -46,15 +48,20 @@ public class Manager {
         commonnotes.save(filename);
     }
 
-    public void showcommonwrong(){
+    public void showcommonwrong(File wrongfile){
         System.out.println("==== 빈출 오답 단어장 ====");
+        commonnotes.loadWrongFile(wrongfile.getPath());
         commonnotes.retainWords();
         commonnotes.printRetainWords();
     }
 
-    public void printcommon(){
-        System.out.println("===== 빈출 단어장 =====");
-        commonnotes.printAll();
+    public void showAll(){
+        System.out.println("=== 단어장 ===");
+        List<String> keys = new ArrayList<>(word.keySet());
+        for (String eng : keys) {
+            Word w = word.get(eng);
+            System.out.println(w.getEng() + " : " + w.getKor());
+        }
     }
 
     public void correct() { //수정
@@ -73,6 +80,7 @@ public class Manager {
         w.setKor(kor);
         System.out.println("단어가 수정되었습니다.");
     }
+
 
     public void delete() { //삭제
         System.out.println("===== 단어 삭제 =====");

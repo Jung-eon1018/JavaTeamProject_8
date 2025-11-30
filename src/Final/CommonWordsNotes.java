@@ -16,6 +16,10 @@ public class CommonWordsNotes {
         commonset.add(word);
     }
 
+    public void loadWrongFile(String filename){
+        wrongnotes.loadFromFile(filename);
+    }
+
     public void loadFromFile (String filename){
         try(Scanner file = new Scanner(new File(filename))){
             while(file.hasNextLine()){

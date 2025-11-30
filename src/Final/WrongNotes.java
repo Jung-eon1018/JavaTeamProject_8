@@ -9,7 +9,7 @@ import java.util.*;
 public class WrongNotes {
     private final Set<Word> set = new HashSet<>();
 
-    public void add(Word w){
+    public void add(Word w) {
         set.add(w);
     }
 
@@ -20,14 +20,14 @@ public class WrongNotes {
                 if (str.isEmpty()) {
                     continue;
                 }
-                String[] temp = str.split("\\s{2,}");
+                String[] temp = str.split("\t");
                 if (temp.length < 2) {
                     System.out.println("파싱 실패 라인: [" + str + "], length=" + temp.length);
                     continue;
                 }
                 set.add(new Word(temp[0].trim(),temp[1].trim()));
-                System.out.println("오답 단어장 불러오기 완료");
             }
+            System.out.println("오답 단어장 불러오기 완료");
         } catch (FileNotFoundException e){
             System.out.println("오답 파일이 존재하지 않습니다");
         }

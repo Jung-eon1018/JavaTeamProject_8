@@ -11,8 +11,8 @@ public class TestMain {
         Manager manager = new Manager();
         Manager_game game = new Manager_game();
 
-        File file = new File("word.txt");
-        File wrongfile = new File("wrong.txt");
+        File file = new File("src/word.txt");
+        File wrongfile = new File("src/wrong.txt");
 
         try {
             if (!file.exists()) {
@@ -49,7 +49,7 @@ public class TestMain {
             String menu = sc.nextLine();
 
             switch (menu){
-                case "1"-> Word_Manager(manager,file);
+                case "1"-> Word_Manager(manager,file, wrongfile);
                 case "2"-> Word_Game(game,file,wrongfile);
                 case "3"-> {
                     System.out.println("프로그램을 종료합니다");
@@ -61,7 +61,7 @@ public class TestMain {
 
     }
 
-    public static void Word_Manager(Manager manager, File file) {
+    public static void Word_Manager(Manager manager, File file, File wrongfile) {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n단어 관리자를 실행합니다.");
         System.out.println("1.단어 목록");
@@ -70,9 +70,11 @@ public class TestMain {
         System.out.println("4.단어 삭제");
         System.out.println("5.단어 검색");
         System.out.println("6.부분 단어 검색");
+        System.out.println("7. 빈출&오답 단어 보기");
         String manager_menu = sc.nextLine();
 
         switch (manager_menu){
+            case "1" -> manager.showAll();
             case "2" -> {
                 manager.add();
                 manager.save(file);
@@ -91,6 +93,7 @@ public class TestMain {
             case "6" ->{
                 manager.search2();
             }
+            case "7" -> manager.showcommonwrong(wrongfile);
         }
 
     }
@@ -103,7 +106,7 @@ public class TestMain {
         System.out.println("3.오답단어 게임");
         System.out.println("4.오답단어 보기");
         System.out.println("5.오답단어 제거하기 게임");
-        System.out.println("6.게임 종료");
+        System.out.println("6.게임 종료(파일 저장)");
         String game_menu = sc.nextLine();
 
 

@@ -168,42 +168,28 @@ public class Manager_game {
 
             System.out.println("=================단어퀴즈("+(i+1)+"/10)=================");
             System.out.println("\t\t\t"+ ans.getEng()+"\t\t\t");
-
-
             int length = howmany; // 선지에서 단어 뽑을 때 컨트롤 할 용도
             List<Integer> numarr = new ArrayList<>();
 
             for(int j = 0;j < howmany; j++){
                 numarr.add(j); // 객관식 선택지에서 n번째 단어   를 맡을 리스트의 동일 버전 => numarr_base는 이후 정답 체크에 필요
             }
-
-
             List<Integer> choicearr = new ArrayList<>();
 
             for(int j = 0;j < howmany; j++){
                 numarr.add(j); // 선택지에 따른 실제 번호 저장하는 리스트
             }
-
-
-
-
             for(int j = 0; j < howmany; j++){
-
-
                 int rnum = rand.nextInt(length);
 
                 int value = numarr.get(rnum);
                 System.out.print((j+1) +") "+ options.get(value).getKor()+ "  ");
 
                 choicearr.add(value);
-
-
                 int switchvalue = numarr.get(length-1);
                 numarr.set(length-1, numarr.get(rnum));
                 numarr.set(rnum, switchvalue); // 이미 사용한 번호의 위치 교환
                 length--;
-
-
             }
             System.out.println(); // 줄바꿈용
             System.out.print("정답 : ");
@@ -218,7 +204,6 @@ public class Manager_game {
                 wronglist.add(ans);
                 wrongnum++;
             }
-
         }
 
         System.out.println("==================게임이 끝났습니다==================");
@@ -686,7 +671,7 @@ public class Manager_game {
     private static void saveMapToFile(File filename, HashMap<String, Word> map) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename.getPath()))) {
             for (Word w : map.values()) {
-                pw.println(w.getEng() + "," + w.getKor());
+                pw.println(w.getEng() + "\t" + w.getKor());
             }
         } catch (IOException e) {
             System.out.println("저장 중 오류 발생 (" + filename + "): " + e.getMessage());
