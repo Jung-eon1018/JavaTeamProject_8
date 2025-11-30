@@ -45,8 +45,10 @@ public class CommonWordsNotes {
         }
     }
 
+
+
     public void retainWords(){
-        commonset.removeAll(wrongnotes.getSet());
+        commonset.retainAll(wrongnotes.getSet());
     }
 
     public void printRetainWords() {

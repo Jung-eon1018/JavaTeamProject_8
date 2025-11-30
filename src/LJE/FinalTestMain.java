@@ -1,18 +1,21 @@
-package Final;
+package LJE;
+
+import Jjh.Manager2;
+import LIM.Manager2_game;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class TestMain {
+public class FinalTestMain {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        Manager manager = new Manager();
-        Manager_game game = new Manager_game();
+        Manager2 manager = new Manager2();
+        Manager2_game game = new Manager2_game();
 
-        File file = new File("word.txt");
-        File wrongfile = new File("wrong.txt");
+        File file = new File("data/word.txt");
+        File wrongfile = new File("data/wrong.txt");
 
         try {
             if (!file.exists()) {
@@ -37,7 +40,6 @@ public class TestMain {
         }
 
         manager.voc(file);
-        game.voc(file);
         game.wrongvoc(wrongfile);
 
         while(true){
@@ -61,7 +63,7 @@ public class TestMain {
 
     }
 
-    public static void Word_Manager(Manager manager, File file) {
+    public static void Word_Manager(Manager2 manager, File file) {
         Scanner sc = new Scanner(System.in);
         System.out.println("\n단어 관리자를 실행합니다.");
         System.out.println("1.단어 목록");
@@ -95,38 +97,33 @@ public class TestMain {
 
     }
 
-    public static void Word_Game(Manager_game game, File file, File wrongfile){
+    public static void Word_Game(Manager2_game game, File file, File wrongfile){
         Scanner sc = new Scanner(System.in);
         System.out.println("\n단어 게임을 실행합니다.");
         System.out.println("1.모든단어 게임");
-        System.out.println("2.힌트 게임");
-        System.out.println("3.오답단어 게임");
-        System.out.println("4.오답단어 보기");
-        System.out.println("5.오답단어 제거하기 게임");
-        System.out.println("6.게임 종료");
+        System.out.println("2.오답단어 게임");
+        System.out.println("3.오답단어 보기");
+        System.out.println("4.오답단어 제거하기 게임");
+        System.out.println("5.게임 종료");
         String game_menu = sc.nextLine();
-
 
         switch (game_menu){
             case "1" -> {
                 game.quizprint(game,game.getWordMap());
             }
             case "2" -> {
-                game.hintgame(game.getWordMap());
-            }
-            case "3" -> {
                 if(game.getWordMap().size()==0){
                     System.out.println("현재 오답이 없습니다.");
                 }
                 game.quizprint(game,game.getWrongWordMap());
             }
-            case "4"->{
+            case "3"->{
                 game.showWrongWords();
             }
-            case "5"->{
+            case "4"->{
                 game.deleteWrongwords();
             }
-            case "6"->{
+            case "5"->{
                 game.saveFiles(file,wrongfile);
             }
         }

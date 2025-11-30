@@ -2,19 +2,25 @@ package LIM;
 
 import LJE.WrongNotes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
-public class Manager2 {
-    HashMap<String, Word> word = new HashMap<>();
-    HashMap<String, Word> wrongword = new HashMap<>();
+public class Manager2_game {
+    private HashMap<String, Word> word = new HashMap<>();
+    private HashMap<String, Word> wrongword = new HashMap<>();
     static Scanner scanner = new Scanner(System.in);
     WrongNotes wrongnotes = new WrongNotes();
 
-    void voc(String filename) { //파일읽기
-        try (Scanner file = new Scanner(new File(filename))) {
+    public HashMap<String, Word> getWordMap() {
+        return word;
+    }
+
+    public HashMap<String, Word> getWrongWordMap() {
+        return wrongword;
+    }
+
+    void voc(File filename) { //파일읽기
+        try (Scanner file = new Scanner(new File(filename.getPath()))) {
 
             while (file.hasNextLine()) {
                 String str = file.nextLine();
@@ -30,9 +36,9 @@ public class Manager2 {
         }
     }
 
-    void wrongvoc(String filename){
+    public void wrongvoc(File filename){
        wrongnotes.toMap();
-       wrongnotes.loadFromFile(filename);
+       wrongnotes.loadFromFile(filename.getPath());
     }
 
     void wordgame1_1(HashMap<String, Word> wordmap){
@@ -578,6 +584,56 @@ public class Manager2 {
             System.out.println(w);
         }
 
+    }
+
+    public void quizprint(Manager2_game wdm, HashMap<String, Word> quizlist){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("실행하실 퀴즈 모드를 선택해주세요");
+        System.out.println("1) 객관식");
+        System.out.println("2) 주관식");
+        int ans = sc.nextInt();
+        sc.nextLine();
+        switch (ans){
+            case 1 -> {
+                System.out.println("실행하실 퀴즈 설정을 선택해주세요");
+                System.out.println("1) 영어 단어(정답 : 한글 뜻)");
+                System.out.println("2) 한글 뜻(정답 : 영어 단어");
+                int ans2 = sc.nextInt();
+                sc.nextLine();
+                switch (ans2) {
+                    case 1 -> wordgame1_1(quizlist);
+                    case 2 -> wordgame1_2(quizlist);
+                }
+            }
+            case 2 -> {
+                System.out.println("실행하실 퀴즈 설정을 선택해주세요");
+                System.out.println("1) 영어 단어(정답 : 한글 뜻)");
+                System.out.println("2) 한글 뜻(정답 : 영어 단어");
+                int ans2 = sc.nextInt();
+                sc.nextLine();
+                switch (ans2) {
+                    case 1 -> wordgame2_1(quizlist);
+                    case 2 -> wordgame2_2(quizlist);
+                }
+            }
+        }
+    }
+
+    public void saveFiles(File wordfile, File wrongfile) {
+        saveMapToFile(wordfile, this.word);
+        saveMapToFile(wrongfile, this.wrongword);
+
+        System.out.println("모든 단어가 파일에 저장되었습니다.");
+    }
+
+    private static void saveMapToFile(File filename, HashMap<String, Word> map) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(filename.getPath()))) {
+            for (Word w : map.values()) {
+                pw.println(w.getEng() + "," + w.getKor());
+            }
+        } catch (IOException e) {
+            System.out.println("저장 중 오류 발생 (" + filename + "): " + e.getMessage());
+        }
     }
 }
 

@@ -8,7 +8,7 @@ public class jjh {
         System.out.println("202511028");
 
 //        Manager m = new Manager();
-//        m.voc("words.txt");
+//        m.voc("word.txt");
 //        m.add();
 //        m.search();
     }
