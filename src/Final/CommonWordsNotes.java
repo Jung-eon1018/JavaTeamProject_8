@@ -1,7 +1,4 @@
-package Jjh;
-
-import LIM.Word;
-import LJE.WrongNotes;
+package Final;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +16,10 @@ public class CommonWordsNotes {
         commonset.add(word);
     }
 
+    public void loadWrongFile(String filename){
+        wrongnotes.loadFromFile(filename);
+    }
+
     public void loadFromFile (String filename){
         try(Scanner file = new Scanner(new File(filename))){
             while(file.hasNextLine()){
@@ -26,7 +27,7 @@ public class CommonWordsNotes {
                 if (str.isEmpty()) {
                     continue;
                 }
-                String[] temp = str.split("\\s{2,}");
+                String[] temp = str.split("\\s+");
                 if (temp.length < 2) {
                     System.out.println("파싱 실패 라인: [" + str + "], length=" + temp.length);
                     continue;
@@ -44,8 +45,6 @@ public class CommonWordsNotes {
             System.out.println(word.getEng()+"\t"+word.getKor());
         }
     }
-
-
 
     public void retainWords(){
         commonset.retainAll(wrongnotes.getSet());
