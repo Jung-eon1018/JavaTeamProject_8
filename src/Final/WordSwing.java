@@ -30,8 +30,8 @@ public class WordSwing extends JFrame {
     private final WrongPanel wrong = new WrongPanel(); //오답&빈출 화면
     private final SubGamePanel subGame = new SubGamePanel();
     private final ObjGamePanel objGame = new ObjGamePanel();
-    private final WrongGame wrongGame = new WrongGame();
     private final CharacterPanel character = new CharacterPanel();
+    private final WrongGame wrongGame = new WrongGame(wrongNotes, character);
 
 
     private JMenuItem itemHome = new JMenuItem("처음으로");
@@ -582,8 +582,10 @@ public class WordSwing extends JFrame {
                         wrongView.clear();
                         wrongView.addAll(wronglist);
                         int totalWrong = wrongNotes.getSet().size();
-                        CharacterPanel character = new CharacterPanel();
                         character.setWrongCount(totalWrong);
+                        //wrongGame에서 사용할 오답 단어및 오답 개수 갱신
+                        wrongGame.setWrongcounts(totalWrong);
+                        wrongGame.refreshFromWrongNotes();
                         cp.add(character,"CHARACTER");
                     }
                 }
@@ -637,10 +639,6 @@ public class WordSwing extends JFrame {
                 model.addRow(new String[]{w.getEng(), w.getKor()});
             }
         }
-
-    }
-    // 오답 게임 패널
-    private class WrongGame extends JPanel{
 
     }
 

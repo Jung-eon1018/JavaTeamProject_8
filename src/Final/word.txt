@@ -20,7 +20,6 @@ banana	바나나
 large	큰
 chair	의자
 water	물
-food	음식
 home	집
 fast	빠른
 slow	느린

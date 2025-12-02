@@ -62,8 +62,6 @@ public class CharacterPanel extends JPanel {
     public void addWrong() {
         wrongCount++;
         recalcEffectiveMaxHp();
-        // 현재 체력은 웬만하면 유지하되,
-        // "최대 체력보다 많아지면" 그때만 잘라준다
         if (currentHp > effectiveMaxHp) {
             currentHp = effectiveMaxHp;
         }
@@ -74,8 +72,7 @@ public class CharacterPanel extends JPanel {
         if (wrongCount > 0) {
             wrongCount--;
             recalcEffectiveMaxHp();
-            // currentHp는 그대로 둔다!
-            // (최대 체력 상한선만 올라가는 느낌)
+            currentHp = effectiveMaxHp;
             updateUIState();
         }
     }
@@ -88,6 +85,8 @@ public class CharacterPanel extends JPanel {
         }
         updateUIState();
     }
+
+
 
     private void recalcEffectiveMaxHp() {
         //오답 1개당 최대체력 3씩 감소

@@ -5,11 +5,16 @@ import java.util.Objects;
 public class Word {
     String kor;
     String eng;
+    private int correctCount = 0;
 
     public Word(String eng, String kor) {
         this.eng = eng;
         this.kor = kor;
     }
+
+    public int getCorrectCount() { return correctCount; }
+    public void increaseCorrectCount() { correctCount++; }
+    public void resetCorrectCount() { correctCount = 0; }
 
     public String getKor() {
         return kor;
