@@ -16,11 +16,12 @@ public class WordSwing extends JFrame {
     private final WrongNotes wrongNotes = new WrongNotes();
     private final List<Word> wordlist = new ArrayList<>(); // 전체 단어 목록
     private final List<Word> wronglist = new ArrayList<>();// 오답 단어 목록
-    private final Set<Word> commonlist = new LinkedHashSet<>(); //빈출 단어 목록
+    private final Set<Word> commonlist = new LinkedHashSet<>();//빈출 단어 목록
+    private final List<Word> wrongView = new ArrayList<>(); // 오답 패널의 테이블에만 보이는 단어 목록
     String filename; //현재 단어 파일 경로
     private File wordFile; //실제 단어 파일을 나타내는 객체
     private File wrongFile;
-
+    private String nowPanel = "HOME"; // 현재 어떤 화면인지 기록
     private final CardLayout cl = new CardLayout(); //화면이 바뀔 때 사용되는 레이아웃
     private final JPanel cp = new JPanel(cl); // cl이 적용된 메인 패널
     String[] header = {"영단어", "뜻"}; //테이블 헤더
@@ -84,6 +85,7 @@ public class WordSwing extends JFrame {
 
     //단어장에서만 메뉴바에 오름차순 내림차순 버튼이 뜨도록 하기
     private void updateMenuByPanel(String panelName){
+        nowPanel = panelName; //어떤 화면인지 불러오는 기능
         boolean isWordOrWrong = panelName.equals("WORD")||panelName.equals("WRONG");
 
         itemAsc.setVisible(isWordOrWrong);
@@ -103,38 +105,93 @@ public class WordSwing extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(cp,"HOME");
+                updateMenuByPanel("HOME");
             }
         });
         itemAsc.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(wordlist.isEmpty()){
-                    JOptionPane.showMessageDialog(null, "단어 파일을 불러오세요");
-                    return;
-                }
-                Collections.sort(wordlist, new Comparator<Word>() {
-                    @Override
-                    public int compare(Word o1, Word o2) {
-                        return o1.getEng().compareTo(o2.getEng());
+                if(nowPanel.equals("WORD")) {
+                    if (wordlist.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "단어 파일을 불러오세요");
+                        return;
                     }
-                });
-                word.update(wordlist);
+                    Collections.sort(wordlist, new Comparator<Word>() {
+                        @Override
+                        public int compare(Word o1, Word o2) {
+                            return o1.getEng().compareTo(o2.getEng());
+                        }
+                    });
+                    word.update(wordlist);
+                }else if(nowPanel.equals("WRONG")){
+                    if(wrongView.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "단어 파일을 불러오세요");
+                        return;
+                    }
+                    //wrongView가 오답 전체(wronglist)인지 체크, 오답 전체가 아니면 교집합
+                    boolean Full = (wrongView.size() == wronglist.size() && wrongView.contains(wronglist));
+                    if(Full) { // 오답 전체면 오답들 정렬
+                        Collections.sort(wronglist, new Comparator<Word>() {
+                            @Override
+                            public int compare(Word o1, Word o2) {
+                                wrongView.clear();
+                                wrongView.addAll(wronglist);
+                                return o1.getEng().compareTo(o2.getEng());
+                            }
+                        });
+                    }else{
+                        Collections.sort(wrongView, new Comparator<Word>() {
+                            @Override
+                            public int compare(Word o1, Word o2) {
+                                return o1.getEng().compareTo(o2.getEng());
+                            }
+                        });
+                    }
+                    wrong.update(wrongView);
+                }
+
             }
         });
         itemDesc.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(wordlist.isEmpty()){
-                    JOptionPane.showMessageDialog(null, "단어 파일을 불러오세요");
-                    return;
-                }
-                Collections.sort(wordlist, new Comparator<Word>() {
-                    @Override
-                    public int compare(Word o1, Word o2) {
-                        return o2.getEng().compareTo(o1.getEng());
+                if(nowPanel.equals("WORD")) {
+                    if (wordlist.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "단어 파일을 불러오세요");
+                        return;
                     }
-                });
-                word.update(wordlist);
+                    Collections.sort(wordlist, new Comparator<Word>() {
+                        @Override
+                        public int compare(Word o1, Word o2) {
+                            return o2.getEng().compareTo(o1.getEng());
+                        }
+                    });
+                    word.update(wordlist);
+                }else if(nowPanel.equals("WRONG")){
+                    if(wronglist.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "단어 파일을 불러오세요");
+                        return;
+                    }
+                    boolean Full = (wrongView.size() == wronglist.size() && wrongView.contains(wronglist));
+                    if(Full) {
+                        Collections.sort(wronglist, new Comparator<Word>() {
+                            @Override
+                            public int compare(Word o1, Word o2) {
+                                wrongView.clear();
+                                wrongView.addAll(wronglist);
+                                return o2.getEng().compareTo(o1.getEng());
+                            }
+                        });
+                    }else{
+                        Collections.sort(wrongView, new Comparator<Word>() {
+                            @Override
+                            public int compare(Word o1, Word o2) {
+                                return o2.getEng().compareTo(o1.getEng());
+                            }
+                        });
+                    }
+                    wrong.update(wrongView);
+                }
             }
         });
         menu.add(itemHome);
@@ -522,6 +579,8 @@ public class WordSwing extends JFrame {
                         }
 
                         update(wronglist);
+                        wrongView.clear();
+                        wrongView.addAll(wronglist);
                         int totalWrong = wrongNotes.getSet().size();
                         CharacterPanel character = new CharacterPanel();
                         character.setWrongCount(totalWrong);
@@ -538,6 +597,9 @@ public class WordSwing extends JFrame {
                         return;
                     }
                     update(wronglist);
+                    //현재 화면 리스트를 wrongView에 동기화
+                    wrongView.clear();
+                    wrongView.addAll(wronglist);
                 }
             });
             //오답&빈출 보기 버튼
@@ -549,7 +611,7 @@ public class WordSwing extends JFrame {
                         return;
                     }
                     if(commonlist.isEmpty()){
-                        JOptionPane.showMessageDialog(null, "오답 단어가 없습니다.");
+                        JOptionPane.showMessageDialog(null, "빈출 단어가 없습니다.");
                         return;
                     }
 
@@ -561,8 +623,11 @@ public class WordSwing extends JFrame {
                     if(l.isEmpty()){
                         JOptionPane.showMessageDialog(null, "빈출과 오답이 겹치는 단어가 없습니다.");
                     }else{
-                        update(l);
+                        wrongView.clear();
+                        wrongView.addAll(l);
+                        update(wrongView);
                     }
+
                 }
             });
         }
