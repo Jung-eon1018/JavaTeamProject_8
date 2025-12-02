@@ -9,7 +9,7 @@ import java.util.*;
 public class WrongNotes {
     private final Set<Word> set = new HashSet<>();
 
-    public void add(Word w) {
+    public void add(Word w){
         set.add(w);
     }
 

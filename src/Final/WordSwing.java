@@ -2,6 +2,7 @@ package Final;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,13 @@ public class WordSwing extends JFrame {
     private final SubGamePanel subGame = new SubGamePanel();
     private final ObjGamePanel objGame = new ObjGamePanel();
     private final WrongGame wrongGame = new WrongGame();
+    private final CharacterPanel character = new CharacterPanel();
+
+
+    private JMenuItem itemHome = new JMenuItem("처음으로");
+    private JMenuItem itemAsc = new JMenuItem("오름차순");
+    private JMenuItem itemDesc = new JMenuItem("내림차순");
+
     WordSwing(){
         setTitle("단어장");
         setSize(900, 600);
@@ -45,6 +53,7 @@ public class WordSwing extends JFrame {
         cp.add(objGame,"OBJ"); // 객관식 게임
         cp.add(wrong,"WRONG"); //오답&빈출 화면
         cp.add(wrongGame, "WRONGGAME");
+        cp.add(character, "CHARACTER");
         c.add(cp);
         cl.show(cp, "HOME");
         setVisible(true);
@@ -73,21 +82,30 @@ public class WordSwing extends JFrame {
         manager.save(wordFile);
     }
 
+    //단어장에서만 메뉴바에 오름차순 내림차순 버튼이 뜨도록 하기
+    private void updateMenuByPanel(String panelName){
+        boolean isWordOrWrong = panelName.equals("WORD")||panelName.equals("WRONG");
+
+        itemAsc.setVisible(isWordOrWrong);
+        itemDesc.setVisible(isWordOrWrong);
+    }
+
+
     //메뉴바 생성
     private JMenuBar menubar(){
         JMenuBar bar = new JMenuBar();
         JMenu menu = new JMenu("메뉴");
-        JMenuItem item1 = new JMenuItem("처음으로");
-        JMenuItem item2 = new JMenuItem("오름차순");
-        JMenuItem item3 = new JMenuItem("내림차순");
-        menu.add(item1);
-        item1.addActionListener(new ActionListener() {
+//        JMenuItem item1 = new JMenuItem("처음으로");
+//        JMenuItem item2 = new JMenuItem("오름차순");
+//        JMenuItem item3 = new JMenuItem("내림차순");
+
+        itemHome.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cl.show(cp,"HOME");
             }
         });
-        item2.addActionListener(new ActionListener() {
+        itemAsc.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(wordlist.isEmpty()){
@@ -103,7 +121,7 @@ public class WordSwing extends JFrame {
                 word.update(wordlist);
             }
         });
-        item3.addActionListener(new ActionListener() {
+        itemDesc.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(wordlist.isEmpty()){
@@ -119,12 +137,14 @@ public class WordSwing extends JFrame {
                 word.update(wordlist);
             }
         });
-        menu.add(item1);
-        menu.add(item2);
-        menu.add(item3);
+        menu.add(itemHome);
+        menu.add(itemAsc);
+        menu.add(itemDesc);
         bar.add(menu);
         return bar;
     }
+
+
     //홈 화면 버튼 스타일
     private void buttonStyle(JButton btn) {
         btn.setFont(new Font("맑은 고딕", Font.BOLD, 18));
@@ -135,6 +155,18 @@ public class WordSwing extends JFrame {
         btn.setMaximumSize(new Dimension(350, 40)); // 최대 크기
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
+    //캐릭터 버튼 스타일
+    private void CharacterbuttonStyle(JButton btn) {
+        btn.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        btn.setBackground(Color.DARK_GRAY); //버튼 배경색
+        btn.setForeground(Color.WHITE); //글자색
+        btn.setFocusPainted(false); //포커스 테두리 없애기
+        btn.setPreferredSize(new Dimension(150, 40)); //기본 크기
+        btn.setMaximumSize(new Dimension(150, 40)); // 최대 크기
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+    }
+
+
     // 첫 화면 패널
     private class HomePanel extends JPanel{
         private Image img;
@@ -150,29 +182,57 @@ public class WordSwing extends JFrame {
 
             JPanel center = new JPanel();
             center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
-            center.setBorder(new EmptyBorder(80, 200, 80, 200));
+            center.setBorder(new EmptyBorder(100, 200, 0, 100));
             center.setOpaque(false); //투명하게 해서 배경 보이도록
+
             JLabel title = new JLabel("단어장");
             title.setFont(new Font("맑은 고딕", Font.BOLD,52));
             title.setForeground(Color.WHITE);
             title.setAlignmentX(Component.CENTER_ALIGNMENT); //중앙 정렬
+
+            JPanel right = new JPanel();
+            right.setLayout(new BorderLayout());
+            right.setBorder(new EmptyBorder(80, 0, 80, 100));
+            right.setOpaque(false);
+
+            JPanel rightBox = new JPanel();
+            rightBox.setOpaque(false);
+            rightBox.setLayout(new BoxLayout(rightBox, BoxLayout.Y_AXIS));
+
+
+
             // 첫 화면의 다섯 개의 버튼
             JButton managerBtn = new JButton("단어관리자");
             JButton subBtn = new JButton("주관식 게임");
             JButton objBtn = new JButton("객관식 게임");
             JButton wrongBtn = new JButton("오답&빈출");
             JButton wrongGameBtn = new JButton("오답 게임");
+            JButton CharacterBtn = new JButton("나의 캐릭터");
+
             //버튼에 스타일 적용
             buttonStyle(managerBtn);
             buttonStyle(subBtn);
             buttonStyle(objBtn);
             buttonStyle(wrongBtn);
             buttonStyle(wrongGameBtn);
+            CharacterbuttonStyle(CharacterBtn);
+
+            //캐릭터 버튼 아래 이미지 아이콘 추가
+            rightBox.add(CharacterBtn);
+            rightBox.add(Box.createVerticalStrut(10));
+
+            ImageIcon charIcon = new ImageIcon(Objects.requireNonNull(WordSwing.class.getResource("steve.png")));
+            JLabel charLabel = new JLabel(charIcon);
+            charLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            rightBox.add(charLabel);
+
+
             //단어관리자 버튼 클릭 시 단어 관리 화면으로
             managerBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     cl.show(cp,"WORD");
+                    updateMenuByPanel("WORD");
                 }
             });
             // 주관식 게임 버튼
@@ -180,6 +240,7 @@ public class WordSwing extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     cl.show(cp,"SUB");
+                    updateMenuByPanel("SUB");
                 }
             });
             // 객관식 게임
@@ -187,6 +248,7 @@ public class WordSwing extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     cl.show(cp, "OBJ");
+                    updateMenuByPanel("OBJ");
                 }
             });
             //오답 빈출 화면으로
@@ -194,12 +256,22 @@ public class WordSwing extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     cl.show(cp,"WRONG");
+                    updateMenuByPanel("WRONG");
                 }
             });
             wrongGameBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     cl.show(cp,"WRONGGAME");
+                    updateMenuByPanel("WRONGGAME");
+                }
+            });
+            //캐릭터 화면으로 이동
+            CharacterBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                   cl.show(cp,"CHARACTER");
+                   updateMenuByPanel("CHARACTER");
                 }
             });
 
@@ -210,7 +282,10 @@ public class WordSwing extends JFrame {
             center.add(objBtn);
             center.add(wrongBtn);
             center.add(wrongGameBtn);
+            right.add(rightBox,BorderLayout.EAST);
+
             add(center,BorderLayout.CENTER);
+            add(right, BorderLayout.EAST);
         }
         //배경 이미지
         @Override
@@ -270,6 +345,8 @@ public class WordSwing extends JFrame {
                     }
                 }
             });
+
+
             //추가 버튼
             addBtn.addActionListener(new ActionListener() {
                 @Override
@@ -429,6 +506,8 @@ public class WordSwing extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JFileChooser chooser = new JFileChooser();
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter("txt File","txt");
+                    chooser.setFileFilter(filter);
                     int result = chooser.showOpenDialog(null);
                     if(result == JFileChooser.APPROVE_OPTION){
                         String path = chooser.getSelectedFile().getPath();
@@ -441,7 +520,12 @@ public class WordSwing extends JFrame {
                         if(wronglist.isEmpty()){
                             JOptionPane.showMessageDialog(null,"오답 단어가 없습니다.");
                         }
+
                         update(wronglist);
+                        int totalWrong = wrongNotes.getSet().size();
+                        CharacterPanel character = new CharacterPanel();
+                        character.setWrongCount(totalWrong);
+                        cp.add(character,"CHARACTER");
                     }
                 }
             });

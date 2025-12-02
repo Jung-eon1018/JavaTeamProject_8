@@ -1,0 +1,12 @@
+sad	슬픈
+dark	어두운
+friend	친구
+table	테이블
+banana	바나나
+large	큰
+chair	의자
+water	물
+food	음식
+home	집
+fast	빠른
+slow	느린

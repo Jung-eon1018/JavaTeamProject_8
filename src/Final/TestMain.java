@@ -11,8 +11,8 @@ public class TestMain {
         Manager manager = new Manager();
         Manager_game game = new Manager_game();
 
-        File file = new File("src/word.txt");
-        File wrongfile = new File("src/wrong.txt");
+        File file = new File("word.txt");
+        File wrongfile = new File("wrong.txt");
 
         try {
             if (!file.exists()) {

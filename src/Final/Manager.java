@@ -3,7 +3,10 @@ package Final;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 
 public class Manager {
     HashMap<String, Word> word = new HashMap<>();
@@ -27,9 +30,6 @@ public class Manager {
         }
     }
 
-    public Collection <Word> getWords(){
-        return word.values();
-    }
     public void save(File filename) { //파일 저장
         try(PrintWriter pw = new PrintWriter(filename)){
             for(String key :word.keySet()){
