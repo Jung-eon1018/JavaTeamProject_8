@@ -260,8 +260,7 @@ public class WordSwing extends JFrame {
 
             // 첫 화면의 다섯 개의 버튼
             JButton managerBtn = new JButton("단어관리자");
-            JButton subBtn = new JButton("주관식 게임");
-            JButton objBtn = new JButton("객관식 게임");
+            JButton subBtn = new JButton("게임 실행");
             JButton wrongBtn = new JButton("오답&빈출");
             JButton wrongGameBtn = new JButton("오답 게임");
             JButton CharacterBtn = new JButton("나의 캐릭터");
@@ -269,7 +268,6 @@ public class WordSwing extends JFrame {
             //버튼에 스타일 적용
             buttonStyle(managerBtn);
             buttonStyle(subBtn);
-            buttonStyle(objBtn);
             buttonStyle(wrongBtn);
             buttonStyle(wrongGameBtn);
             CharacterbuttonStyle(CharacterBtn);
@@ -292,20 +290,12 @@ public class WordSwing extends JFrame {
                     updateMenuByPanel("WORD");
                 }
             });
-            // 주관식 게임 버튼
+            // 게임 실행 버튼
             subBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     cl.show(cp,"SUB");
                     updateMenuByPanel("SUB");
-                }
-            });
-            // 객관식 게임
-            objBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    cl.show(cp, "OBJ");
-                    updateMenuByPanel("OBJ");
                 }
             });
             //오답 빈출 화면으로
@@ -336,7 +326,6 @@ public class WordSwing extends JFrame {
             center.add(Box.createVerticalStrut(30));
             center.add(managerBtn);
             center.add(subBtn);
-            center.add(objBtn);
             center.add(wrongBtn);
             center.add(wrongGameBtn);
             right.add(rightBox,BorderLayout.EAST);
