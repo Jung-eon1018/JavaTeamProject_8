@@ -683,7 +683,7 @@ public class Manager2_game {
     private static void saveMapToFile(File filename, HashMap<String, Word> map) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(filename.getPath()))) {
             for (Word w : map.values()) {
-                pw.println(w.getEng() + "," + w.getKor());
+                pw.println(w.getEng() + "\t" + w.getKor());
             }
         } catch (IOException e) {
             System.out.println("저장 중 오류 발생 (" + filename + "): " + e.getMessage());
