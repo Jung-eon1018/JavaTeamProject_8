@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class Manager_game {
+public class Manager2_game {
     HashMap<String, Word> commonword = new HashMap<>();
     WrongNotes wns = new WrongNotes();
     static Scanner scanner = new Scanner(System.in);
@@ -44,7 +44,7 @@ public class Manager_game {
     }
 
 
-    public static void quizprint(Manager_game wdm, HashMap<String, Word> quizlist){
+    public static void quizprint(Manager2_game wdm, HashMap<String, Word> quizlist){
         Scanner sc = new Scanner(System.in);
         System.out.println("실행하실 퀴즈 모드를 선택해주세요");
         System.out.println("1) 객관식");

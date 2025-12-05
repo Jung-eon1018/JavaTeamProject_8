@@ -1,7 +1,7 @@
 package LJE;
 
 import Jjh.Manager2;
-import LIM.Manager_game;
+import LIM.Manager2_game;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ public class FinalTestMain {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Manager2 manager = new Manager2();
-        Manager_game game = new Manager_game();
+        Manager2_game game = new Manager2_game();
 
         File file = new File("data/word.txt");
         File wrongfile = new File("data/wrong.txt");
@@ -98,7 +98,7 @@ public class FinalTestMain {
 
     }
 
-    public static void Word_Game(Manager_game game, File file, File wrongfile){
+    public static void Word_Game(Manager2_game game, File file, File wrongfile){
         Scanner sc = new Scanner(System.in);
         System.out.println("\n단어 게임을 실행합니다.");
         System.out.println("1.모든단어 게임");
